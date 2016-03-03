@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+    <enterprise-beans>
+        <session>
+            <ejb-name>ProcessShop</ejb-name>
+            <home>com.gagan.Stateless.ProcessShopHome</home>
+            <remote>com.gagan.Stateless.ProcessShopRemote</remote>
+            <ejb-class>com.gagan.Stateless.ProcessShopList</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+        </session>    
+    </enterprise-beans>
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>ProcessShop</ejb-name>
+                <method-name>parseOrder</method-name>
+            </method>
+            <trans-attribute>Never</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

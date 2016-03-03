@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="b2c" default="compile" basedir=".">
+	<property file="build.properties" />
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<!--delete dir="${dir.docs}"/-->
+		<delete dir="${dir.deploy}/${app.name}.ear" />
+		
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${dir.build}/${dir.classes}" />
+		<javac srcdir="${dir.src}" destdir="${dir.build}/${dir.classes}" classpath="${classpath}" debug="true" />
+	</target>
+
+	 <target name="globaljar" depends="compile">
+		<mkdir dir="${dir.build}/${dir.temp}" />
+		<jar jarfile="${dir.build}/${dir.temp}/com.Outpost.jar" basedir="${dir.build}/${dir.classes}">
+		</jar>
+	</target>
+
+	<target name="ejbjar" depends="globaljar">
+		<!-- Session EJB -->
+		<ejbjar srcdir="${dir.build}/${dir.classes}" descriptordir="${dir.src}/com/gagan/Stateless" basejarname="Ssb" classpath="${dir.build}/${dir.classes}" dependency="full">
+			<dtd publicId="-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" location="${dir.dtd}/ejb-jar_2_0.dtd" />
+			<jboss destdir="${dir.build}/${dir.temp}" />
+			<include name="**/ejb-jar.xml" />
+		</ejbjar>
+	</target>
+
+	<target name="prepare-war" depends="ejbjar">
+
+		<mkdir dir="${dir.build}/${dir.temp}" />
+
+		<war destfile="${dir.build}/${dir.temp}/${web.app.name}.war" webxml="${dir.config}/web.xml">
+			<!--manifest="${dir.config}/MANIFEST.MF"-->
+			 <fileset dir="${dir.web}"/>
+			<lib dir="${dir.lib}">
+				<include name="parser.jar" />
+				<include name="castor-0.9.4.3-xml.jar" />
+				<include name="log4j-1.2.8.jar" />
+				<include name="mysql-connector-java-5.1.21-bin.jar" />
+				<!--   <include name= "j2ee.jar"></include> -->
+			</lib>
+			<lib dir="${dir.build}/${dir.temp}">
+				<include name="com.Outpost.jar" />
+				<!-- <include name="searchagent.jar"/> -->
+			</lib>
+
+			<webinf dir="${dir.config}">
+				<include name="jboss-web.xml" />
+				<include name="jboss-classloading.xml" />
+			</webinf>
+		</war>
+	</target>
+
+	<target name="prepare-ear" depends="prepare-war">
+
+		<copy toDir="${dir.build}/${dir.temp}/${app.name}.ear">
+			<fileset dir="${dir.build}/${dir.temp}">
+				<include name="web-app.war" />
+				<!--<include name="ShoppingEJB.jar"/>-->
+				<include name="Ssb.jar" />
+				 <include name="com.frys.business.cart.ejb.jar"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${dir.build}/${dir.temp}/${app.name}.ear/META-INF" />
+		<!--  <copy toDir="${dir.build}/${dir.temp}/${app.name}.ear/META-INF"/> -->
+		<jar destfile="${dir.build}/${app.name}.ear" basedir="${dir.build}/${dir.temp}/${app.name}.ear" />
+		<copy toDir="${dir.build}/${dir.temp}/${app.name}.ear/META-INF">
+			<fileset dir="${dir.config}">
+				<include name="application.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy-ear" depends="prepare-ear">
+		<echo message="copying file" />
+		<copy toDir="${dir.deploy}" file="${dir.build}/${app.name}.ear" />
+		<!-- <antcall target="copy-ear-server2"/> -->
+		<!-- <antcall target="copy-ear-server3"/> -->
+	</target>
+
+	<target name="deploy-ear" description="Deploys ear to server after successful first time deployment">
+		<antcall target="copy-ear" />
+
+	</target>
+
+</project>

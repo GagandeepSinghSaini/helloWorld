@@ -1,0 +1,11 @@
+Github Account:
+Username: GagandeepSinghSaini
+Email: g.saini2692@gmail.com	
+Password: Saini2603
+
+linking eclipse with github using egit
+Help >> install new software 
+url to install: http://download.eclipse.org/egit/updates
+
+
+Guide for linking: http://stackoverflow.com/questions/20264627/how-to-connect-with-github-repository-in-eclipse

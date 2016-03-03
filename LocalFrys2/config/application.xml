@@ -1,0 +1,19 @@
+<application xmlns="http://java.sun.com/xml/ns/javaee"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd"
+             version="5">
+<!-- 
+<application xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+-->
+    <display-name>Outpost</display-name>
+    <module>
+        <web>
+            <web-uri>web-app.war</web-uri>
+            <context-root>/</context-root>
+        </web>
+    </module>
+    <module>
+        <ejb>Ssb.jar</ejb>
+    </module>
+    
+</application>
