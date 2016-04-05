@@ -1,0 +1,14 @@
+.form-horizontal {
+	background-color: grey;
+	border-radius: 3px;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+body {
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+}
+#header {
+	padding-top: 20px;
+}
